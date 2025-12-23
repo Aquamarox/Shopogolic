@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Gozon - Отслеживание заказа</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css">
+</head>
+<body>
+    <h1>Статус ваших заказов (WebSocket)</h1>
+    <div id="status">Ожидание подключения...</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js"></script>
+    <script>
+        const notyf = new Notyf({ duration: 5000, position: { x: 'right', y: 'top' } });
+
+        // ВАЖНО: укажите тот же userId, который вы используете в Postman/Swagger
+        const userId = "be578685-7963-4876-8809-58b38342468f";
+
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/orderHub")
+            .build();
+
+        connection.on("ReceiveOrderStatusUpdate", (data) => {
+            console.log("Получено обновление:", data);
+            document.getElementById("status").innerText = `Заказ ${data.orderId}: ${data.status}`;
+
+            if (data.status === "PaymentCompleted") {
+                notyf.success(data.message);
+            } else {
+                notyf.error(data.message);
+            }
+        });
+
+        connection.start().then(() => {
+            connection.invoke("JoinUserGroup", userId);
+            document.getElementById("status").innerText = "Подключено. Ожидаем событий...";
+        });
+    </script>
+</body>
+</html>

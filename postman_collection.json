@@ -1,0 +1,80 @@
+{
+  "info": {
+    "name": "Shopogolic API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Payments Service",
+      "item": [
+        {
+          "name": "Create Account",
+          "request": {
+            "method": "POST",
+            "url": "http://localhost:8081/api/accounts?userId=user-123"
+          }
+        },
+        {
+          "name": "Deposit Funds",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"amount\": 1000}"
+            },
+            "url": "http://localhost:8081/api/accounts/user-123/deposit"
+          }
+        },
+        {
+          "name": "Get Balance",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8081/api/accounts/user-123/balance"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders Service",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"userId\": \"user-123\", \"items\": [{\"productId\": \"prod-1\", \"productName\": \"Ноутбук\", \"quantity\": 1, \"price\": 500}]}"
+            },
+            "url": "http://localhost:8080/api/orders"
+          }
+        },
+        {
+          "name": "Get Order Status",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/orders/{{orderId}}?userId=user-123"
+          }
+        },
+        {
+          "name": "Get All Orders",
+          "request": {
+            "method": "GET",
+            "url": "http://localhost:8080/api/orders?userId=user-123"
+          }
+        }
+      ]
+    }
+  ]
+}
