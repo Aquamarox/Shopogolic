@@ -5,10 +5,16 @@ using System.Text.Json;
 
 namespace PaymentsService.Common.SendPaymentResult
 {
+    /// <summary>
+    /// Интерфейс сервиса для фиксации результата оплаты.
+    /// </summary>
     public class SendPaymentResultService(PaymentContext context) : ISendPaymentResultService
     {
         private readonly PaymentContext _context = context;
 
+        /// <summary>
+        /// Формирует событие результата платежа (успех или ошибка) и сохраняет его в таблицу Outbox.
+        /// </summary>
         public async Task SendPaymentResultAsync(
             Guid orderId,
             Guid userId,

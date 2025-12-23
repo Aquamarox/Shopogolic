@@ -1,5 +1,8 @@
 ﻿namespace OrdersService.Models
 {
+    /// <summary>
+    /// Сущность заказа, содержащая информацию о пользователе, сумме и текущем статусе.
+    /// </summary>
     public class Order
     {
         public Guid Id { get; set; }

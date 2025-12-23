@@ -5,6 +5,10 @@ using PaymentsService.Models;
 
 namespace PaymentsService.Common.SendPaymentResult
 {
+    /// <summary>
+    /// Фоновый сервис (воркер), который отправляет накопленные сообщения о результатах платежей из Outbox в Kafka.
+    /// Гарантирует доставку статуса оплаты обратно в сервис заказов.
+    /// </summary>
     public class PaymentResultSender(
         IServiceScopeFactory scopeFactory,
         ILogger<PaymentResultSender> logger,

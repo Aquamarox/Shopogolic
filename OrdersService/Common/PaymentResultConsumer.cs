@@ -4,26 +4,28 @@ using Microsoft.EntityFrameworkCore;
 using OrdersService.Database;
 using OrdersService.Models;
 using System.Text.Json;
-using Microsoft.AspNetCore.SignalR; // Добавить это
-using OrdersService.Common;        // Добавить это, чтобы видеть OrderHub
+using Microsoft.AspNetCore.SignalR;
+using OrdersService.Common;
 
 namespace OrdersService.Common
 {
+    /// <summary>
+    /// Фоновый сервис, который прослушивает Kafka на предмет результатов оплаты (успех/ошибка).
+    /// Обновляет статус заказа в базе данных и уведомляет пользователя через SignalR.
+    /// </summary>
     public class PaymentResultConsumer(
         IServiceScopeFactory scopeFactory,
         ILogger<PaymentResultConsumer> logger,
         IConsumer<string, string> consumer,
         IConfiguration configuration,
-        IHubContext<OrderHub> hubContext) : BackgroundService // Добавили hubContext в конструктор
+        IHubContext<OrderHub> hubContext) : BackgroundService
     {
         private readonly IServiceScopeFactory _scopeFactory = scopeFactory;
         private readonly ILogger<PaymentResultConsumer> _logger = logger;
         private readonly IConsumer<string, string> _consumer = consumer;
-        private readonly IHubContext<OrderHub> _hubContext = hubContext; // Сохраняем хаб
+        private readonly IHubContext<OrderHub> _hubContext = hubContext;
         private readonly string _paymentProcessedTopic = configuration["Kafka:Topic:PaymentProcessed"] ?? "payment-processed";
         private readonly string _paymentFailedTopic = configuration["Kafka:Topic:PaymentFailed"] ?? "payment-failed";
-
-        // ... ExecuteAsync и ProcessMessageAsync остаются такими же ...
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -78,6 +80,9 @@ namespace OrdersService.Common
             catch (Exception ex) { _logger.LogError(ex, "Error processing message"); }
         }
 
+        /// <summary>
+        /// Обновляет статус заказа в базе данных и отправляет Push-уведомление через WebSocket.
+        /// </summary>
         private async Task UpdateOrderStatusAsync(OrderContext context, Guid orderId, OrderStatus status, CancellationToken cancellationToken)
         {
             Order? order = await context.Orders.FirstOrDefaultAsync(o => o.Id == orderId, cancellationToken);
@@ -90,14 +95,12 @@ namespace OrdersService.Common
 
                 _logger.LogInformation("Order {OrderId} status updated to {Status}", orderId, status);
 
-                // --- НОВАЯ ЧАСТЬ: ОТПРАВКА В SIGNALR ---
                 await _hubContext.Clients.Group(order.UserId.ToString()).SendAsync("ReceiveOrderStatusUpdate", new
                 {
                     OrderId = order.Id,
                     Status = status.ToString(),
                     Message = status == OrderStatus.PaymentCompleted ? "Оплата успешно получена!" : "Ошибка при оплате заказа."
                 }, cancellationToken);
-                // ---------------------------------------
             }
         }
 

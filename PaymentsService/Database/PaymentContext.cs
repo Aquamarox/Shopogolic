@@ -3,6 +3,10 @@ using PaymentsService.Models;
 
 namespace PaymentsService.Database
 {
+    /// <summary>
+    /// Контекст базы данных Entity Framework для сервиса платежей.
+    /// Управляет таблицами счетов (Accounts), транзакций (Transactions) и очередей сообщений (Inbox/Outbox).
+    /// </summary>
     public class PaymentContext(DbContextOptions<PaymentContext> options) : DbContext(options)
     {
         public DbSet<Account> Accounts { get; set; }
@@ -10,6 +14,10 @@ namespace PaymentsService.Database
         public DbSet<InboxMessage> InboxMessages { get; set; }
         public DbSet<OutboxMessage> OutboxMessages { get; set; }
 
+        /// <summary>
+        /// Настройка конфигурации моделей и связей в базе данных при её создании.
+        /// Включает описание ограничений, индексов для идемпотентности и типов колонок.
+        /// </summary>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             _ = modelBuilder.Entity<Account>(entity =>

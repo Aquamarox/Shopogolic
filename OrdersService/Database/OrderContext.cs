@@ -3,6 +3,10 @@ using OrdersService.Models;
 
 namespace OrdersService.Database
 {
+    /// <summary>
+    /// Контекст базы данных Entity Framework для сервиса заказов.
+    /// Отвечает за маппинг моделей Order, OrderItem и OutboxMessage на таблицы БД.
+    /// </summary>
     public class OrderContext(DbContextOptions<OrderContext> options) : DbContext(options)
     {
         public DbSet<Order> Orders { get; set; }

@@ -1,9 +1,13 @@
 ﻿namespace PaymentsService.Models
 {
+    /// <summary>
+    /// Сообщение, полученное извне и сохраненное для гарантированной обработки.
+    /// Используется для реализации паттерна Transactional Inbox и обеспечения идемпотентности.
+    /// </summary>
     public class InboxMessage
     {
         public Guid Id { get; set; }
-        public string MessageId { get; set; } = string.Empty; // Идентификатор сообщения для идемпотентности
+        public string MessageId { get; set; } = string.Empty;
         public string EventType { get; set; } = string.Empty;
         public string Payload { get; set; } = string.Empty;
         public bool IsProcessed { get; set; }

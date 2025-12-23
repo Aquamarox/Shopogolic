@@ -4,6 +4,10 @@ using Microsoft.Extensions.Logging;
 
 namespace PaymentsService.Database
 {
+    /// <summary>
+    /// Фоновый сервис, отвечающий за автоматическое применение миграций к базе данных платежей.
+    /// Содержит логику ожидания готовности БД и повторных попыток подключения.
+    /// </summary>
     public class MigrationRunner(IServiceProvider serviceProvider, ILogger<MigrationRunner> logger) : IHostedService
     {
         private readonly IServiceProvider _serviceProvider = serviceProvider;
@@ -13,8 +17,12 @@ namespace PaymentsService.Database
         private static string? _failureReason;
 
         /// <summary>
-        /// Статический метод для ожидания завершения миграций
+        /// Позволяет другим сервисам (например, потребителям Kafka) дождаться успешного завершения миграций 
+        /// перед началом работы, чтобы избежать ошибок отсутствия таблиц.
         /// </summary>
+        /// <param name="timeout">Максимальное время ожидания.</param>
+        /// <param name="logger">Экземпляр логгера для записи состояния.</param>
+        /// <returns>True, если миграции успешно применены; иначе false.</returns>
         public static bool WaitForMigrations(TimeSpan timeout, ILogger logger)
         {
             logger.LogInformation("Waiting for migrations to complete (timeout: {Timeout}s)...", timeout.TotalSeconds);

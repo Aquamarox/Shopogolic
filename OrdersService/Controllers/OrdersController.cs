@@ -6,7 +6,10 @@ using OrdersService.UseCases.GetOrderStatus;
 
 namespace OrdersService.Controllers
 {
-
+    /// <summary>
+    /// Контроллер для управления заказами.
+    /// Предоставляет методы для создания заказов и получения их статуса.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class OrdersController(
@@ -18,6 +21,11 @@ namespace OrdersService.Controllers
         private readonly IGetOrdersService _getOrdersService = getOrdersService;
         private readonly IGetOrderStatusService _getOrderStatusService = getOrderStatusService;
 
+        /// <summary>
+        /// Создает новый заказ в системе.
+        /// </summary>
+        /// <param name="request">Данные для создания заказа (ID пользователя, список товаров).</param>
+        /// <returns>Результат создания заказа с его идентификатором.</returns>
         [HttpPost]
         public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequest request)
         {
@@ -25,6 +33,10 @@ namespace OrdersService.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Получает список всех заказов конкретного пользователя.
+        /// </summary>
+        /// <param name="userId">Идентификатор пользователя.</param>
         [HttpGet]
         public async Task<IActionResult> GetOrders([FromQuery] Guid userId)
         {

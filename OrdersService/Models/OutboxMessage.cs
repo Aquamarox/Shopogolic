@@ -1,5 +1,9 @@
 ﻿namespace OrdersService.Models
 {
+    /// <summary>
+    /// Модель сообщения для паттерна Transactional Outbox. 
+    /// Хранит события, которые должны быть гарантированно отправлены в брокер сообщений.
+    /// </summary>
     public class OutboxMessage
     {
         public Guid Id { get; set; }

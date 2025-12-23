@@ -1,5 +1,8 @@
 ﻿namespace PaymentsService.Models
 {
+    /// <summary>
+    /// Тип финансовой операции.
+    /// </summary>
     public enum TransactionType
     {
         Deposit = 0,

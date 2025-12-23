@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore.Design;
 
 namespace OrdersService.Database
 {
+    /// <summary>
+    /// Фабрика контекста БД, используемая инструментами миграции Entity Framework Core во время разработки.
+    /// </summary>
     public class OrderContextFactory : IDesignTimeDbContextFactory<OrderContext>
     {
         public OrderContext CreateDbContext(string[] args)

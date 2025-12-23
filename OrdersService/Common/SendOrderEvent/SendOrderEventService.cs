@@ -40,7 +40,6 @@ namespace OrdersService.Common.SendOrderEvent
 
         public async Task SendOrderStatusUpdatedEventAsync(Order order, CancellationToken cancellationToken)
         {
-            // Реализация для обновления статуса заказа (опционально)
             await Task.CompletedTask;
         }
     }

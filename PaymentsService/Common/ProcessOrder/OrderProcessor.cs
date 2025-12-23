@@ -6,6 +6,10 @@ using System.Text.Json;
 
 namespace PaymentsService.Common.ProcessOrder
 {
+    /// <summary>
+    /// Фоновый сервис, который обрабатывает сообщения из таблицы Inbox.
+    /// Инициирует процесс списания средств и передает результат в сервис отправки уведомлений.
+    /// </summary>
     public class OrderProcessor(
         IServiceScopeFactory scopeFactory,
         ILogger<OrderProcessor> logger) : BackgroundService

@@ -1,5 +1,8 @@
 ﻿namespace PaymentsService.Models
 {
+    /// <summary>
+    /// Статус финансовой транзакции.
+    /// </summary>
     public enum TransactionStatus
     {
         Pending = 0,

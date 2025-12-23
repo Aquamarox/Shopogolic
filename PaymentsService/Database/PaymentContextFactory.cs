@@ -3,6 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace PaymentsService.Database
 {
+    /// <summary>
+    /// Настройка конфигурации моделей и связей в базе данных при её создании.
+    /// Включает описание ограничений, индексов для идемпотентности и типов колонок.
+    /// </summary>
     public class PaymentContextFactory : IDesignTimeDbContextFactory<PaymentContext>
     {
         public PaymentContext CreateDbContext(string[] args)

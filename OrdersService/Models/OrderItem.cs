@@ -1,5 +1,8 @@
 ﻿namespace OrdersService.Models
 {
+    /// <summary>
+    /// Информация о конкретной товарной позиции внутри заказа.
+    /// </summary>
     public class OrderItem
     {
         public Guid Id { get; set; }

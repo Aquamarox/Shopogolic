@@ -7,6 +7,10 @@ using System.Text.Json;
 
 namespace PaymentsService.Common.ProcessOrder
 {
+    /// <summary>
+    /// Фоновый сервис для прослушивания топика заказов в Kafka.
+    /// Реализует паттерн Transactional Inbox, сохраняя входящие сообщения в базу для обеспечения идемпотентности.
+    /// </summary>
     public class OrderConsumer(
         IServiceScopeFactory scopeFactory,
         ILogger<OrderConsumer> logger,

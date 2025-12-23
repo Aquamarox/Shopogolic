@@ -5,6 +5,10 @@ using OrdersService.Models;
 
 namespace OrdersService.Common.SendOrderEvent
 {
+    /// <summary>
+    /// Реализация паттерна Transactional Outbox.
+    /// Фоновый воркер, который сканирует таблицу OutboxMessages и отправляет события в Kafka.
+    /// </summary>
     public class OrderEventSender(
         IServiceScopeFactory scopeFactory,
         ILogger<OrderEventSender> logger,

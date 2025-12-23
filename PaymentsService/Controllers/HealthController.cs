@@ -2,6 +2,9 @@
 
 namespace PaymentsService.Controllers
 {
+    /// <summary>
+    /// Контроллер для проверки состояния здоровья (health check) сервиса платежей.
+    /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     public class HealthController : ControllerBase

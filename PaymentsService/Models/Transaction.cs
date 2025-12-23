@@ -2,6 +2,9 @@
 
 namespace PaymentsService.Models
 {
+    /// <summary>
+    /// Запись о финансовой операции (пополнение, списание, удержание средств).
+    /// </summary>
     public class Transaction
     {
         public Guid Id { get; set; }
